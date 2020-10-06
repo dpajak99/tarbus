@@ -5,4 +5,5 @@ Aplikacja (przynajmniej w zamiarze) opierająca się na modelu MVVM (ale jestem 
 Dokładny opis aplikacji: https://github.com/dpajak99/bus-tarnow
 
 Tablica Trello: https://trello.com/b/IrPblqGh/bus-app
+
 Youtube: https://youtu.be/xE8EYXFCIr4
