@@ -2,16 +2,11 @@ package com.softarea.tarbus.ui.main.viewmodel;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableInt;
 
 import com.softarea.tarbus.Application;
-import com.softarea.tarbus.R;
 import com.softarea.tarbus.data.database.DatabaseService;
-import com.softarea.tarbus.data.interfaces.BusStop;
 import com.softarea.tarbus.data.model.DatabaseBusStop;
 
 import java.util.ArrayList;
@@ -21,7 +16,6 @@ import java.util.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 
 public class BusStopListViewModel extends Observable {
@@ -42,11 +36,11 @@ public class BusStopListViewModel extends Observable {
 
   private void fetchBusStopList() {
     Log.i("TEST", "START");
-    Application peopleApplication = Application.create(context);
+    Application application = Application.create(context);
      DatabaseService databaseService = new DatabaseService(context);
 
     Disposable disposable = databaseService.getDatabase().dbBusStopDAO().getAll()
-      .subscribeOn(peopleApplication.subscribeScheduler())
+      .subscribeOn(application.subscribeScheduler())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(databaseBusStops -> {
         changeBusStopDataSet(databaseBusStops);

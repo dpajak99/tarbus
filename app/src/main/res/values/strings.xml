@@ -17,4 +17,7 @@
     <string name="meters">metrów</string>
     <string name="to_your_destination">do Twojego celu</string>
     <string name="to">do</string>
+
+    <string name="next_departues">NAJBLIŻSZE</string>
+    <string name="schedule">ROZKŁAD</string>
 </resources>

@@ -1,8 +1,8 @@
 package com.softarea.tarbus.ui.main.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.softarea.tarbus.R;
@@ -38,8 +37,8 @@ public class BusStopListAdapter extends RecyclerView.Adapter<BusStopListAdapter.
 
     public ViewHolder(@NonNull View itemView) {
       super(itemView);
-      id = itemView.findViewById(R.id.schedule_bus_stop_id);
-      name = itemView.findViewById(R.id.schedule_bus_stop_name);
+      //id = itemView.findViewById(R.id.schedule_bus_stop_id);
+      name = itemView.findViewById(R.id.tv_bus_stop_name);
       busStop = itemView.findViewById(R.id.layout_bus_stop);
     }
   }
@@ -67,16 +66,16 @@ public class BusStopListAdapter extends RecyclerView.Adapter<BusStopListAdapter.
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
     DatabaseBusStop busStop = filteredData.get(position);
-    holder.id.setText(String.valueOf(busStop.getId()));
+    //holder.id.setText(String.valueOf(busStop.getId()));
     holder.name.setText(busStop.getName());
 
 
     holder.busStop.setOnClickListener(view -> {
-      Bundle result = new Bundle();
-      result.putInt("id", busStop.getId());
-      result.putString("BUS_STOP_NAME", busStop.getName());
-
-      Navigation.findNavController(holder.itemView).navigate(R.id.navigation_slide_bus_stop, result);
+      Intent returnIntent = new Intent();
+      returnIntent.putExtra("BUS_STOP_ID", busStop.getId());
+      returnIntent.putExtra("BUS_STOP_NAME", busStop.getName());
+      activity.setResult(Activity.RESULT_OK,returnIntent);
+      activity.finish();
     });
   }
 

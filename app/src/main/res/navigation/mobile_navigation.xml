@@ -9,59 +9,59 @@
         android:id="@+id/navigation_home"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_bus_stop_details"
-        android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
+        android:name="com.softarea.tarbus.ui.main.view.BusStopDetailsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_near"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_busstop_list_map"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_bus_details_map"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_get_coords_map"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_search_connection_map"
         android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/navigation_slide_bus_stop"
-        android:name="com.softarea.tarbus.ui.main.view.HomeFragment"
+        android:id="@+id/navigation_bus_stop_details_slide"
+        android:name="com.softarea.tarbus.ui.main.view.BusStopDetailsSlideFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home2" />
+        tools:layout="@layout/fragment_home" />
 
 </navigation>

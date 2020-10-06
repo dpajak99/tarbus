@@ -2,18 +2,17 @@ package com.softarea.tarbus.ui.main.databinding;
 
 
 import android.view.View;
-
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.softarea.tarbus.R;
 
 public class HomeFragmentDataBinding {
   private View view;
-  public RecyclerView recyclerBusStops;
+  public TextView buttonSearch;
 
   public HomeFragmentDataBinding(View view) {
     this.view = view;
-    this.recyclerBusStops = view.findViewById(R.id.recycler_bus_stops);
+    this.buttonSearch = view.findViewById(R.id.edittext_search);
   }
 
   public View getView() {

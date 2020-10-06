@@ -5,6 +5,7 @@ import com.softarea.tarbus.data.model.LiveDepartues;
 import com.softarea.tarbus.data.model.LiveJsonVehicles;
 import com.softarea.tarbus.data.model.SearchConnectionCallback;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,7 +14,7 @@ public interface MpkService {
   String HTTPS_API_MPK_URL = "http://rozklad.komunikacja.tarnow.pl/";
 
   @GET("Home/GetNextDepartues")
-  Call<LiveDepartues> getSchedule(@Query("busStopId") String id);
+  Observable<LiveDepartues> getSchedule(@Query("busStopId") int id);
 
   @GET("Home/CNR_GetVehicles")
   Call<LiveJsonVehicles> getVehicles(@Query("r") String busLine, @Query("d") String destination, @Query("nb") String busId );

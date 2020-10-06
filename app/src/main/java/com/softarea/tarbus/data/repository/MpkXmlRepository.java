@@ -1,20 +1,11 @@
 package com.softarea.tarbus.data.repository;
 
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.maps.model.Marker;
-import com.google.gson.JsonArray;
-import com.softarea.tarbus.data.model.BusStopInfoMapHolder;
-import com.softarea.tarbus.data.model.BusStopMapObject;
-import com.softarea.tarbus.data.model.BusTrack;
-import com.softarea.tarbus.data.model.LiveDepartues;
 import com.softarea.tarbus.data.model.LiveJsonVehicles;
-import com.softarea.tarbus.data.model.RouteHolder;
-import com.softarea.tarbus.data.model.RouteWariant;
 import com.softarea.tarbus.data.model.Vehicle;
 import com.softarea.tarbus.utils.RepositoryUtils;
 import com.tickaroo.tikxml.TikXml;
@@ -27,15 +18,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class MpkXmlRepository {
   private MpkService mpkService;
   private static MpkXmlRepository MpkXmlRepository;
 
-  private MpkXmlRepository() {
+  public MpkXmlRepository() {
     TikXml tikxml = new TikXml.Builder().exceptionOnUnreadXml(true).build();
     Retrofit retrofit = new Retrofit.Builder()
       .baseUrl(MpkService.HTTPS_API_MPK_URL)
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
       .addConverterFactory(TikXmlConverterFactory.create(tikxml))
       .build();
 
@@ -47,6 +40,10 @@ public class MpkXmlRepository {
       MpkXmlRepository = new MpkXmlRepository();
     }
     return MpkXmlRepository;
+  }
+
+  public MpkService getMpkService() {
+    return mpkService;
   }
 
   public LiveData<List<Vehicle>> getBusStopByLine(String busId, String busLine) {
@@ -77,39 +74,39 @@ public class MpkXmlRepository {
     return data;
   }
 
-  public LiveData<BusStopInfoMapHolder> getBusStopInfo(int id, final Marker marker, final BusStopMapObject busStop) {
+  /*public Observable<BusStopInfoMapHolder> getBusStopInfo(int id, final Marker marker, final BusStopMapObject busStop) {
     final MutableLiveData<BusStopInfoMapHolder> data = new MutableLiveData<>();
-    mpkService.getSchedule(String.valueOf(id)).enqueue(new Callback<LiveDepartues>() {
+    mpkService.getSchedule(String.valueOf(id)).enqueue(new Callback<Observable<LiveDepartues>>() {
       @Override
-      public void onResponse(Call<LiveDepartues> call, Response<LiveDepartues> response) {
-        LiveDepartues departues = response.body();
-        data.setValue(new BusStopInfoMapHolder(departues, marker, busStop));
+      public void onResponse(Call<Observable<LiveDepartues>> call, Response<Observable<LiveDepartues>> response) {
+        Observable<LiveDepartues> departues = response.body();
+        //data.setValue(new BusStopInfoMapHolder(departues, marker, busStop));
       }
 
       @Override
-      public void onFailure(Call<LiveDepartues> call, Throwable t) {
+      public void onFailure(Call<Observable<LiveDepartues>> call, Throwable t) {
         //AlertUtils.alert(activity, activity.getString(R.string.error_download_shedule));
       }
     });
 
-    return data;
-  }
+    return null;
+  }*/
 
-  public LiveData<LiveDepartues> getNextDepartuesFromBusStop(int id) {
-    final MutableLiveData<LiveDepartues> data = new MutableLiveData<>();
-    mpkService.getSchedule(String.valueOf(id)).enqueue(new Callback<LiveDepartues>() {
+  /*public Observable<LiveDepartues> getNextDepartuesFromBusStop(int id) {
+    final Observable<LiveDepartues>[] data = new Observable[]{};
+    mpkService.getSchedule(id).enqueue(new Callback<Observable<LiveDepartues>>() {
       @Override
-      public void onResponse(Call<LiveDepartues> call, Response<LiveDepartues> response) {
-        LiveDepartues departues = response.body();
-        data.setValue(departues);
+      public void onResponse(Call<Observable<LiveDepartues>> call, Response<Observable<LiveDepartues>> response) {
+        Observable<LiveDepartues> departues = response.body();
+        data[0] = departues;
       }
 
       @Override
-      public void onFailure(Call<LiveDepartues> call, Throwable t) {
+      public void onFailure(Call<Observable<LiveDepartues>> call, Throwable t) {
         Log.i("TEST", "DeserializeFromXML - onFailure : " + t.toString());
       }
     });
 
-    return data;
-  }
+    return data[0];
+  }*/
 }
