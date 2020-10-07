@@ -44,16 +44,52 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.ViewHolder> {
   public void update(List<Departue> remoteDatabaseDepartues) {
     this.remoteDatabaseDepartues.clear();
     Collections.sort(remoteDatabaseDepartues, new ListUtils.Sortbyroll());
-    this.remoteDatabaseDepartues.addAll(remoteDatabaseDepartues);
-    this.notifyDataSetChanged();
-  }
-
-  public void clear() {
-    this.remoteDatabaseDepartues.clear();
+    this.remoteDatabaseDepartues.addAll(prepareDeparturesList(remoteDatabaseDepartues));
     this.notifyDataSetChanged();
   }
 
   public BusAdapter() {
+  }
+
+  private List<Departue> prepareDeparturesList(List<Departue> departues) {
+    //TODO: Research for simplest solution
+    List<Integer> usedLines = new ArrayList<>();
+    List<Integer> itemsToRemove = new ArrayList<>();
+    int size = departues.size();
+    for (int i = 0; i < size; i++) {
+      Departue departue = departues.get(i);
+      if (departue.getLiveTime() == null) {
+        if (departue.getDepartueTime() > 0 && departue.getDepartueTime() < 60) {
+          itemsToRemove.add(i);
+          departues.add(departue);
+        } else if (departue.getDepartueTime() < TimeUtils.getCurrentTimeInMin()) {
+          itemsToRemove.add(i);
+          continue;
+        }
+        if (!ListUtils.isIntInList(usedLines, departue.getBusLine())) {
+          usedLines.add(departue.getBusLine());
+          itemsToRemove.add(i);
+        }
+      } else {
+        if (departue.getDepartueTime() < 1000) {
+          if (TimeUtils.liveTimeToMin( departue.getLiveTime() ) < TimeUtils.getCurrentTimeInMin()) {
+            itemsToRemove.add(i);
+            departues.add(departue);
+          }
+        }
+      }
+    }
+
+    return removeDepartuesFromList(itemsToRemove, departues);
+  }
+
+  public static List<Departue> removeDepartuesFromList(List<Integer> itemsToRemove, List<Departue> list) {
+    int o = 0;
+    for (int i : itemsToRemove) {
+      list.remove(i - o);
+      o++;
+    }
+    return list;
   }
 
   @NonNull
@@ -72,7 +108,7 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.ViewHolder> {
 
     holder.busNumber.setText(departueItem.getBusLine() + "\n" + departueItem.getBusId());
     holder.busDirection.setText(departueItem.getDestination());
-    if( departueItem.getLiveTime().length() != 0 ) {
+    if (departueItem.getLiveTime() != null) {
       holder.busDepartueTime.setText(StringUtils.replaceHTML(departueItem.getLiveTime()));
     } else {
       holder.busDepartueTime.setText(TimeUtils.min2HHMM(departueItem.getDepartueTime()));

@@ -66,6 +66,18 @@ public class TimeUtils {
     return text;
   }
 
+  public static String getCurrentDayType() {
+    Calendar calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_WEEK);
+    if(day <= 5 ) {
+      return "RO";
+    } else if( day == 6 ) {
+      return "WS";
+    } else {
+      return "SW";
+    }
+  }
+
   public static String translateDayShortcutToDayName( String shortcut ) {
     switch (shortcut) {
       case "RO":
@@ -77,5 +89,15 @@ public class TimeUtils {
       default:
         return "INNE";
     }
+  }
+
+  public static int liveTimeToMin(String timeInString) {
+    //TODO: Prettify it
+    int one = timeInString.charAt(0);
+    int two = timeInString.charAt(1);
+    int three = timeInString.charAt(3);
+    int four = timeInString.charAt(4);
+
+    return (one * 10 + two) * (three * 10 + four);
   }
 }

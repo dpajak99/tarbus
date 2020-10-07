@@ -27,6 +27,7 @@
             <TextView
                 android:id="@+id/tv_bus_stop_name"
                 android:layout_width="wrap_content"
+                android:maxLines="1"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
@@ -42,6 +43,7 @@
             <TextView
                 android:id="@+id/tv_bus_stop_directions"
                 android:layout_width="wrap_content"
+                android:maxLines="1"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>

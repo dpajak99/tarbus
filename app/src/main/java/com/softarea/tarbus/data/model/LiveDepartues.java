@@ -9,7 +9,7 @@ import java.util.List;
 @Xml(name = "Departues")
 public class LiveDepartues {
   @Element(name = "N")
-  MpkEmpty mpkEmpty;
+  LiveDepartueHolder liveDepartueHolder;
   @Attribute(name = "time")
   String time;
   @Attribute(name = "i")
@@ -30,5 +30,15 @@ public class LiveDepartues {
   }
 
   public LiveDepartues() {
+  }
+
+  @Override
+  public String toString() {
+    return "LiveDepartues{" +
+      "n=" + liveDepartueHolder +
+      ", time='" + time + '\'' +
+      ", busStopId=" + busStopId +
+      ", departueList=" + departueList +
+      '}';
   }
 }

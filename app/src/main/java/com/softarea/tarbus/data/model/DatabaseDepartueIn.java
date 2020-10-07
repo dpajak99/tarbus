@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
 @Entity(tableName = "Odjazd", primaryKeys = {"id_odjazdu"})
-public class DatabaseDepartue {
+public class DatabaseDepartueIn {
   @ColumnInfo(name = "id_odjazdu")
   int departueId;
   @ColumnInfo(name = "id_przystanku")
@@ -27,7 +27,7 @@ public class DatabaseDepartue {
   @NonNull
   String dayType;
 
-  public DatabaseDepartue(int departueId, @NonNull int budStopId, @NonNull int busId, @NonNull int wariantId, @NonNull int departueTime, @NonNull String additions, @NonNull String dayType) {
+  public DatabaseDepartueIn(int departueId, @NonNull int budStopId, @NonNull int busId, @NonNull int wariantId, @NonNull int departueTime, @NonNull String additions, @NonNull String dayType) {
     this.departueId = departueId;
     this.budStopId = budStopId;
     this.busId = busId;

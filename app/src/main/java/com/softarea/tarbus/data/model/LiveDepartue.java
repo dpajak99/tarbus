@@ -1,10 +1,13 @@
 package com.softarea.tarbus.data.model;
 
+import androidx.annotation.Nullable;
+
 import com.softarea.tarbus.data.interfaces.Departue;
 import com.tickaroo.tikxml.annotation.Attribute;
+import com.tickaroo.tikxml.annotation.Element;
 import com.tickaroo.tikxml.annotation.Xml;
 
-@Xml(name = "D")
+@Xml(name = "d")
 public class LiveDepartue implements Departue {
   @Attribute(name = "i")
   int departueId;
@@ -32,11 +35,14 @@ public class LiveDepartue implements Departue {
   String liveTime;
   @Attribute(name = "vn")
   String vn;
+  @Nullable
+  @Element(name = "D")
+  LiveDepartue nextDepartue;
 
   public LiveDepartue() {
   }
 
-  public LiveDepartue(int departueId, int variantId, int busId, int t, int busLine, String destination, String dd, String p, String kn, int remainingTime, int m, String liveTime, String vn) {
+  public LiveDepartue(int departueId, int variantId, int busId, int t, int busLine, String destination, String dd, String p, String kn, int remainingTime, int m, String liveTime, String vn, @Nullable LiveDepartue nextDepartue) {
     this.departueId = departueId;
     this.variantId = variantId;
     this.busId = busId;
@@ -50,6 +56,12 @@ public class LiveDepartue implements Departue {
     this.m = m;
     this.liveTime = liveTime;
     this.vn = vn;
+    this.nextDepartue = nextDepartue;
+  }
+
+  @Override
+  public int getDepartueId() {
+    return departueId;
   }
 
   @Override
@@ -59,22 +71,16 @@ public class LiveDepartue implements Departue {
 
   @Override
   public int getDepartueTime() {
-    return 0;
+    return remainingTime;
   }
 
   @Override
-  public String getLiveTime() {
-    return liveTime;
+  public int getBusId() {
+    return busId;
   }
 
-  @Override
-  public String getDestination() {
-    return destination;
-  }
-
-  @Override
-  public int getDepartueId() {
-    return departueId;
+  public int getT() {
+    return t;
   }
 
   @Override
@@ -83,7 +89,41 @@ public class LiveDepartue implements Departue {
   }
 
   @Override
-  public int getBusId() {
-    return busId;
+  public String getDestination() {
+    return destination;
+  }
+
+  public String getDd() {
+    return dd;
+  }
+
+  public String getP() {
+    return p;
+  }
+
+  public String getKn() {
+    return kn;
+  }
+
+  public int getRemainingTime() {
+    return remainingTime;
+  }
+
+  public int getM() {
+    return m;
+  }
+
+  @Override
+  public String getLiveTime() {
+    return liveTime;
+  }
+
+  public String getVn() {
+    return vn;
+  }
+
+  @Nullable
+  public LiveDepartue getNextDepartue() {
+    return nextDepartue;
   }
 }

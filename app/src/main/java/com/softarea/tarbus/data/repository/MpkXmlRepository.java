@@ -24,7 +24,7 @@ public class MpkXmlRepository {
   private MpkService mpkService;
   private static MpkXmlRepository MpkXmlRepository;
 
-  public MpkXmlRepository() {
+  private MpkXmlRepository() {
     TikXml tikxml = new TikXml.Builder().exceptionOnUnreadXml(true).build();
     Retrofit retrofit = new Retrofit.Builder()
       .baseUrl(MpkService.HTTPS_API_MPK_URL)
@@ -34,7 +34,6 @@ public class MpkXmlRepository {
 
     mpkService = retrofit.create(MpkService.class);
   }
-
   public synchronized static MpkXmlRepository getInstance() {
     if (MpkXmlRepository == null) {
       MpkXmlRepository = new MpkXmlRepository();
@@ -92,21 +91,26 @@ public class MpkXmlRepository {
     return null;
   }*/
 
-  /*public Observable<LiveDepartues> getNextDepartuesFromBusStop(int id) {
-    final Observable<LiveDepartues>[] data = new Observable[]{};
-    mpkService.getSchedule(id).enqueue(new Callback<Observable<LiveDepartues>>() {
+  /*public ObservableField<LiveDepartues> getNextDepartuesFromBusStop(int id) {
+    final ObservableField<LiveDepartues> data = new ObservableField<>();
+    mpkService.getSchedule(id).enqueue(new Callback<LiveDepartues>() {
       @Override
-      public void onResponse(Call<Observable<LiveDepartues>> call, Response<Observable<LiveDepartues>> response) {
-        Observable<LiveDepartues> departues = response.body();
-        data[0] = departues;
+      public void onResponse(Call<LiveDepartues> call, Response<LiveDepartues> response) {
+        LiveDepartues departues = response.body();
+        data.set(departues);
       }
 
       @Override
-      public void onFailure(Call<Observable<LiveDepartues>> call, Throwable t) {
+      public void onFailure(Call<LiveDepartues> call, Throwable t) {
         Log.i("TEST", "DeserializeFromXML - onFailure : " + t.toString());
       }
     });
 
-    return data[0];
+    return data;
+  }*/
+
+  /*public Observable<LiveDepartues> getNextDepartuesFromBusStop(int id) {
+    return getInstance().getMpkService().getSchedule(id)
+      .distinct();
   }*/
 }
