@@ -11,10 +11,13 @@ import com.softarea.tarbus.data.interfaces.Departue;
 import com.softarea.tarbus.data.model.DatabaseDepartueOut;
 import com.softarea.tarbus.data.model.LiveDepartue;
 import com.softarea.tarbus.data.repository.MpkXmlRepository;
+import com.softarea.tarbus.ui.main.helpers.DeparturesHelper;
 import com.softarea.tarbus.ui.main.view.BusStopDetailsSlideFragment;
+import com.softarea.tarbus.utils.ListUtils;
 import com.softarea.tarbus.utils.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
 
@@ -34,12 +37,16 @@ public class BusStopDetailsViewModel extends Observable {
     this.context = context;
     this.departuesFromDatabase = new ArrayList<>();
     this.departues = new ArrayList<>();
+    refresh();
+  }
+
+  public void refresh() {
     fetchBusList();
   }
 
   private void fetchBusList() {
     Application application = Application.create(context);
-     DatabaseService databaseService = new DatabaseService(context);
+    DatabaseService databaseService = new DatabaseService(context);
     int busStopId = BusStopDetailsSlideFragment.BUS_STOP_ID_GLOBAL;
     Disposable disposable = databaseService.getDatabase().dbDepartueDAO().getNextDepartues(busStopId, TimeUtils.getCurrentTimeInMin(), TimeUtils.getCurrentDayType())
       .subscribeOn(application.subscribeScheduler())
@@ -72,10 +79,48 @@ public class BusStopDetailsViewModel extends Observable {
   }
 
   private void changeBusStopDataSet(List<LiveDepartue> departues) {
-    this.departues.addAll(departues);
-    this.departues.addAll(departuesFromDatabase);
+    this.departues.clear();
+    this.departues.addAll(this.departuesFromDatabase);
+    this.departues = removePreviousDepartues(this.departues);
+    this.departues.addAll(prepareRemoteDepartue(departues));
+    this.departues.sort(Comparator.comparing(Departue::getDepartueTime));
     setChanged();
     notifyObservers();
+  }
+
+  private List<Departue> removePreviousDepartues(List<Departue> departues) {
+    List<Integer> itemsToRemove = new ArrayList<>();
+    List<Integer> usedLines = new ArrayList<>();
+    int currentTime = TimeUtils.getCurrentTimeInMin();
+    for (int i = 0; i < departues.size(); i++) {
+      Departue departue = departues.get(i);
+      if (departue.getDepartueTime() > 0 && departue.getDepartueTime() < 60) {
+        departue.setDepartueTime(departue.getDepartueTime() + 1440);
+      } else if (departue.getDepartueTime() < currentTime) {
+        itemsToRemove.add(i);
+        continue;
+      }
+      if (!ListUtils.isIntInList(usedLines, departue.getBusLine())) {
+        usedLines.add(departue.getBusLine());
+        itemsToRemove.add(i);
+      }
+    }
+
+    return DeparturesHelper.removeDepartuesFromList(itemsToRemove, departues);
+  }
+
+  private List<LiveDepartue> prepareRemoteDepartue(List<LiveDepartue> departues) {
+    int currentTime = TimeUtils.getCurrentTimeInMin();
+    for(LiveDepartue departue : departues ) {
+      if(departue.getDepartueTime() < currentTime) {
+        departue.setDepartueTime(departue.getDepartueTime()+1440);
+      }
+      if(departue.getBusId() > 0) {
+        departue.getDepartureTag().setLive(true);
+      }
+      departue.getDepartureTag().setFirst(true);
+    }
+    return departues;
   }
 
   public List<Departue> getDepartues() {
