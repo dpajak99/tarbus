@@ -1,5 +1,7 @@
 package com.softarea.tarbus.utils;
 
+import android.util.Log;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.softarea.tarbus.R;
@@ -49,7 +51,7 @@ public class TimeUtils {
 
   public static int getCurrentTimeInMin() {
     Calendar rightNow = Calendar.getInstance();
-    return rightNow.get(Calendar.HOUR_OF_DAY) * 60 +  rightNow.get(Calendar.MINUTE);
+    return rightNow.get(Calendar.HOUR_OF_DAY) * 60 + rightNow.get(Calendar.MINUTE);
   }
 
   public static String getCurrentDate() {
@@ -69,16 +71,16 @@ public class TimeUtils {
   public static String getCurrentDayType() {
     Calendar calendar = Calendar.getInstance();
     int day = calendar.get(Calendar.DAY_OF_WEEK);
-    if(day <= 5 ) {
+    if (day <= 5) {
       return "RO";
-    } else if( day == 6 ) {
+    } else if (day == 6) {
       return "WS";
     } else {
       return "SW";
     }
   }
 
-  public static String translateDayShortcutToDayName( String shortcut ) {
+  public static String translateDayShortcutToDayName(String shortcut) {
     switch (shortcut) {
       case "RO":
         return "DNI ROBOCZE";
@@ -93,11 +95,31 @@ public class TimeUtils {
 
   public static int liveTimeToMin(String timeInString) {
     //TODO: Prettify it
-    int one = timeInString.charAt(0);
-    int two = timeInString.charAt(1);
-    int three = timeInString.charAt(3);
-    int four = timeInString.charAt(4);
+    StringBuilder result = new StringBuilder();
+    Log.i("TEST", "DUPA1" +timeInString.charAt(0) + timeInString.charAt(1) + timeInString.charAt(2) + "");
+    timeInString = StringUtils.replaceHTML(timeInString);
+    if (timeInString.contains("min")) {
+      Log.i("TEST", "DUPA2" +timeInString.charAt(0) + timeInString.charAt(1) + timeInString.charAt(2) + "");
+      for (int i = 0; i < timeInString.length(); i++) {
+        char a = timeInString.charAt(i);
+        if (a == '<') {
+          Log.i("TEST", "<1min " + TimeUtils.getCurrentTimeInMin());
+          return TimeUtils.getCurrentTimeInMin();
+        } else if (a == ' ') {
+          Log.i("TEST", timeInString.charAt(0) + timeInString.charAt(1) + timeInString.charAt(2) + "");
+          return TimeUtils.getCurrentTimeInMin() + Integer.parseInt(result.toString());
+        } else {
+          result.append(a);
+        }
+      }
+    } else {
+      int one = Character.getNumericValue(timeInString.charAt(0));
+      int two = Character.getNumericValue(timeInString.charAt(1));
+      int three = Character.getNumericValue(timeInString.charAt(3));
+      int four = Character.getNumericValue(timeInString.charAt(4));
 
-    return (one * 10 + two) * (three * 10 + four);
+      return (one * 10 + two) * 60 + (three * 10) + four;
+    }
+    return 0;
   }
 }

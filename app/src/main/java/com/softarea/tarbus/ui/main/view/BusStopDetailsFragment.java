@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.softarea.tarbus.R;
-import com.softarea.tarbus.ui.main.adapter.BusAdapter;
+import com.softarea.tarbus.ui.main.adapter.DepartureAdapter;
 import com.softarea.tarbus.ui.main.databinding.BusDetailsFragmentDataBinding;
 import com.softarea.tarbus.ui.main.viewmodel.BusStopDetailsViewModel;
 
@@ -19,7 +19,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class BusStopDetailsFragment extends Fragment implements Observer {
-  private BusAdapter busAdapter;
+  private DepartureAdapter departureAdapter;
   private BusDetailsFragmentDataBinding binding;
   private BusStopDetailsViewModel busStopDetailsViewModel;
 
@@ -39,7 +39,7 @@ public class BusStopDetailsFragment extends Fragment implements Observer {
 
   private void setUpPullToRefreshAction() {
     binding.swipeRefreshLayout.setOnRefreshListener(() -> {
-      //updateFragment(busStopId);
+      busStopDetailsViewModel.refresh();
       final Handler handler = new Handler();
       handler.postDelayed(() -> {
         if(binding.swipeRefreshLayout.isRefreshing()) {
@@ -50,19 +50,19 @@ public class BusStopDetailsFragment extends Fragment implements Observer {
   }
 
   private void setUpRecyclerBusList() {
-    busAdapter = new BusAdapter();
+    departureAdapter = new DepartureAdapter();
     binding.recyclerBuses.setHasFixedSize(true);
     binding.recyclerBuses.setLayoutManager(new LinearLayoutManager(getActivity()));
-    binding.recyclerBuses.setAdapter(busAdapter);
+    binding.recyclerBuses.setAdapter(departureAdapter);
   }
 
   @Override
   public void update(Observable observable, Object o) {
     if (observable instanceof BusStopDetailsViewModel) {
-      BusAdapter busAdapter = (BusAdapter) binding.recyclerBuses.getAdapter();
+      DepartureAdapter departureAdapter = (DepartureAdapter) binding.recyclerBuses.getAdapter();
       BusStopDetailsViewModel busStopDetailsViewModel = (BusStopDetailsViewModel) observable;
-      if (busAdapter != null) {
-        busAdapter.update(busStopDetailsViewModel.getDepartues());
+      if (departureAdapter != null) {
+        departureAdapter.update(busStopDetailsViewModel.getDepartues());
       }
     }
   }

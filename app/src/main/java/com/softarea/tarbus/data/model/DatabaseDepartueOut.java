@@ -1,6 +1,7 @@
 package com.softarea.tarbus.data.model;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 
 import com.softarea.tarbus.data.interfaces.Departue;
 
@@ -15,6 +16,8 @@ public class DatabaseDepartueOut implements Departue {
   private int departueTime;
   @ColumnInfo(name = "opis_trasy")
   private String destination;
+  @Ignore
+  DepartureTag departureTag;
 
   public DatabaseDepartueOut(int departueId, int busLine, int variantId, int departueTime, String destination) {
     this.departueId = departueId;
@@ -22,6 +25,7 @@ public class DatabaseDepartueOut implements Departue {
     this.variantId = variantId;
     this.departueTime = departueTime;
     this.destination = destination;
+    this.departureTag = new DepartureTag();
   }
 
   @Override
@@ -47,6 +51,16 @@ public class DatabaseDepartueOut implements Departue {
   @Override
   public int getDepartueTime() {
     return departueTime;
+  }
+
+  @Override
+  public void setDepartueTime(int time) {
+    this.departueTime = departueTime;
+  }
+
+  @Override
+  public DepartureTag getDepartureTag() {
+    return departureTag;
   }
 
   @Override

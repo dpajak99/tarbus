@@ -2,6 +2,8 @@ package com.softarea.tarbus.ui.main.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +16,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.softarea.tarbus.R;
 import com.softarea.tarbus.data.interfaces.Departue;
-import com.softarea.tarbus.utils.ListUtils;
 import com.softarea.tarbus.utils.StringUtils;
 import com.softarea.tarbus.utils.TimeUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class BusAdapter extends RecyclerView.Adapter<BusAdapter.ViewHolder> {
+public class DepartureAdapter extends RecyclerView.Adapter<DepartureAdapter.ViewHolder> {
 
   private List<Departue> remoteDatabaseDepartues = new ArrayList<>();
+  private final Handler handler = new Handler();
+  private List<Runnable> runnableList = new ArrayList<>();
 
   public static class ViewHolder extends RecyclerView.ViewHolder {
     public TextView busNumber;
     public TextView busDirection;
+
+    public TextView tvFirst;
+    public TextView tvLive;
+    public TextView tvOffline;
+
     public TextView busDepartueTime;
     public LinearLayout contentHolder;
 
@@ -38,67 +45,34 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.ViewHolder> {
       busDirection = itemView.findViewById(R.id.schedule_bus_dir);
       busDepartueTime = itemView.findViewById(R.id.schedule_bus_departue_time);
       contentHolder = itemView.findViewById(R.id.content_holder);
+
+      tvFirst = itemView.findViewById(R.id.tv_first);
+      tvLive = itemView.findViewById(R.id.tv_live);
+      tvOffline = itemView.findViewById(R.id.tv_offline);
+
+
     }
   }
 
   public void update(List<Departue> remoteDatabaseDepartues) {
+    for (Runnable runnable : runnableList) {
+      this.handler.removeCallbacks(runnable);
+    }
     this.remoteDatabaseDepartues.clear();
-    Collections.sort(remoteDatabaseDepartues, new ListUtils.Sortbyroll());
-    this.remoteDatabaseDepartues.addAll(prepareDeparturesList(remoteDatabaseDepartues));
+    this.remoteDatabaseDepartues.addAll(remoteDatabaseDepartues);
     this.notifyDataSetChanged();
   }
 
-  public BusAdapter() {
-  }
-
-  private List<Departue> prepareDeparturesList(List<Departue> departues) {
-    //TODO: Research for simplest solution
-    List<Integer> usedLines = new ArrayList<>();
-    List<Integer> itemsToRemove = new ArrayList<>();
-    int size = departues.size();
-    for (int i = 0; i < size; i++) {
-      Departue departue = departues.get(i);
-      if (departue.getLiveTime() == null) {
-        if (departue.getDepartueTime() > 0 && departue.getDepartueTime() < 60) {
-          itemsToRemove.add(i);
-          departues.add(departue);
-        } else if (departue.getDepartueTime() < TimeUtils.getCurrentTimeInMin()) {
-          itemsToRemove.add(i);
-          continue;
-        }
-        if (!ListUtils.isIntInList(usedLines, departue.getBusLine())) {
-          usedLines.add(departue.getBusLine());
-          itemsToRemove.add(i);
-        }
-      } else {
-        if (departue.getDepartueTime() < 1000) {
-          if (TimeUtils.liveTimeToMin( departue.getLiveTime() ) < TimeUtils.getCurrentTimeInMin()) {
-            itemsToRemove.add(i);
-            departues.add(departue);
-          }
-        }
-      }
-    }
-
-    return removeDepartuesFromList(itemsToRemove, departues);
-  }
-
-  public static List<Departue> removeDepartuesFromList(List<Integer> itemsToRemove, List<Departue> list) {
-    int o = 0;
-    for (int i : itemsToRemove) {
-      list.remove(i - o);
-      o++;
-    }
-    return list;
+  public DepartureAdapter() {
   }
 
   @NonNull
   @Override
-  public BusAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                  int viewType) {
+  public DepartureAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                        int viewType) {
     Context context = parent.getContext();
     LayoutInflater layoutInflater = LayoutInflater.from(context);
-    View listItem = layoutInflater.inflate(R.layout.item_bus, parent, false);
+    View listItem = layoutInflater.inflate(R.layout.item_departure, parent, false);
     return new ViewHolder(listItem);
   }
 
@@ -106,12 +80,30 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.ViewHolder> {
   public void onBindViewHolder(ViewHolder holder, int position) {
     Departue departueItem = remoteDatabaseDepartues.get(position);
 
-    holder.busNumber.setText(departueItem.getBusLine() + "\n" + departueItem.getBusId());
+    holder.busNumber.setText(String.valueOf(departueItem.getBusLine()));
     holder.busDirection.setText(departueItem.getDestination());
+
     if (departueItem.getLiveTime() != null) {
-      holder.busDepartueTime.setText(StringUtils.replaceHTML(departueItem.getLiveTime()));
+      String liveTime = StringUtils.replaceHTML(departueItem.getLiveTime());
+      holder.busDepartueTime.setText(liveTime);
+      showHideNextTime(holder, liveTime.charAt(0));
     } else {
       holder.busDepartueTime.setText(TimeUtils.min2HHMM(departueItem.getDepartueTime()));
+    }
+
+    if (departueItem.getDepartureTag().isFirst()) {
+      Log.i("TEST", departueItem.getBusId() + "");
+      holder.tvFirst.setVisibility(View.VISIBLE);
+    } else {
+      holder.tvFirst.setVisibility(View.GONE);
+    }
+    if (departueItem.getDepartureTag().isLive()) {
+      Log.i("TEST", departueItem.getBusId() + "");
+      holder.tvLive.setVisibility(View.VISIBLE);
+      holder.tvOffline.setVisibility(View.GONE);
+    } else {
+      holder.tvLive.setVisibility(View.GONE);
+      holder.tvOffline.setVisibility(View.VISIBLE);
     }
 
     holder.contentHolder.setOnClickListener(view -> {
@@ -122,6 +114,30 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.ViewHolder> {
       Navigation.findNavController(holder.itemView).navigate(R.id.navigation_bus_details_map, result);
     });
   }
+
+  private void showHideNextTime(ViewHolder holder, char a) {
+    if (a == '<') {
+      Log.i("TEST", "timer1");
+
+      Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+          if (holder.busDepartueTime.getVisibility() == View.VISIBLE) {
+            holder.busDepartueTime.setVisibility(View.INVISIBLE);
+          } else {
+            holder.busDepartueTime.setVisibility(View.VISIBLE);
+          }
+          handler.postDelayed(this, 500);
+          Log.i("TEST", "timer");
+        }
+      };
+      runnableList.add(runnable);
+      handler.postDelayed(runnable, 500);
+    }
+
+
+  }
+
 
   @Override
   public int getItemCount() {
