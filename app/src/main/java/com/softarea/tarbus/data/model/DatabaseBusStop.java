@@ -58,11 +58,16 @@ public class DatabaseBusStop implements BusStop {
     return isCity;
   }
 
-  public double getLatitude() {
+  @Override
+  public void setIsCity(int status) {
+      this.isCity = isCity;
+  }
+
+  public double getLat() {
     return latitude;
   }
 
-  public double getLongitude() {
+  public double getLng() {
     return longitude;
   }
 
@@ -88,5 +93,20 @@ public class DatabaseBusStop implements BusStop {
 
   public void setDepartueLines(List<String> departueLines) {
     this.departueLines = departueLines;
+  }
+
+  @Override
+  public String toString() {
+    return "DatabaseBusStop{" +
+      "id=" + id +
+      ", isCity=" + isCity +
+      ", latitude=" + latitude +
+      ", longitude=" + longitude +
+      ", name='" + name + '\'' +
+      ", number='" + number + '\'' +
+      ", zone='" + zone + '\'' +
+      ", busLineDepartues='" + busLineDepartues + '\'' +
+      ", departueLines=" + departueLines +
+      '}';
   }
 }

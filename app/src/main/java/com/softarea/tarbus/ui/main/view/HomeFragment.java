@@ -12,18 +12,18 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.softarea.tarbus.R;
-import com.softarea.tarbus.ui.main.databinding.HomeFragmentDataBinding;
+import com.softarea.tarbus.ui.main.databinding.HomeDataBinding;
 
 import java.util.Observable;
 import java.util.Observer;
 
 
 public class HomeFragment extends Fragment implements Observer {
-  private HomeFragmentDataBinding binding;
+  private HomeDataBinding binding;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-    binding = new HomeFragmentDataBinding(inflater.inflate(R.layout.fragment_home, container, false));
+    binding = new HomeDataBinding(inflater.inflate(R.layout.fragment_home, container, false));
 
     setUpSearchButton();
     return binding.getView();

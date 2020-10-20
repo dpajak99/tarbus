@@ -6,11 +6,11 @@ import android.widget.TextView;
 
 import com.softarea.tarbus.R;
 
-public class HomeFragmentDataBinding {
+public class HomeDataBinding {
   private View view;
   public TextView buttonSearch;
 
-  public HomeFragmentDataBinding(View view) {
+  public HomeDataBinding(View view) {
     this.view = view;
     this.buttonSearch = view.findViewById(R.id.edittext_search);
   }

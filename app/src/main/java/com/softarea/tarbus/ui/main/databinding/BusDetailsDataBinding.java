@@ -9,13 +9,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.softarea.tarbus.R;
 import com.softarea.tarbus.ui.main.view.BusStopDetailsSlideFragment;
 
-public class BusDetailsFragmentDataBinding {
+public class BusDetailsDataBinding {
   private View view;
   public int bundleBusStopId;
   public RecyclerView recyclerBuses;
   public SwipeRefreshLayout swipeRefreshLayout;
 
-  public BusDetailsFragmentDataBinding(View view) {
+  public BusDetailsDataBinding(View view) {
     this.view = view;
     this.bundleBusStopId = BusStopDetailsSlideFragment.BUS_STOP_ID_GLOBAL;
     this.recyclerBuses = view.findViewById(R.id.list_buses);

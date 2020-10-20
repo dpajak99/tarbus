@@ -15,4 +15,8 @@ public class DatabaseService {
   public AppDatabase getDatabase() {
     return database;
   }
+
+  public static DatabaseService getInstance(Context context) {
+    return new DatabaseService(context);
+  }
 }

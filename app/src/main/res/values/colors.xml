@@ -12,4 +12,6 @@
     <color name="darkgray">#555555</color>
     <color name="lightgray">#bbbbbb</color>
     <color name="white">#ffffff</color>
+
+    <color name="marker_background_color">#ffffff</color>
 </resources>

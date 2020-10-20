@@ -2,13 +2,13 @@ package com.softarea.tarbus.data.model;
 
 import java.util.List;
 
-public class RouteHolder {
+public class HolderRoute {
   int id;
   int startPoint;
   int endPoint;
   List<RoutePoint> points;
 
-  public RouteHolder(int id, int startPoint, int endPoint, List<RoutePoint> points) {
+  public HolderRoute(int id, int startPoint, int endPoint, List<RoutePoint> points) {
     this.id = id;
     this.startPoint = startPoint;
     this.endPoint = endPoint;

@@ -1,9 +1,10 @@
 package com.softarea.tarbus.data.interfaces;
 
-public interface BusStop {
+public interface BusStop extends MapItem {
   int getId();
   int getIsCity();
-  double getLatitude();
-  double getLongitude();
+  void setIsCity(int status);
+  double getLat();
+  double getLng();
   String getName();
 }

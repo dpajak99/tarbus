@@ -96,10 +96,8 @@ public class TimeUtils {
   public static int liveTimeToMin(String timeInString) {
     //TODO: Prettify it
     StringBuilder result = new StringBuilder();
-    Log.i("TEST", "DUPA1" +timeInString.charAt(0) + timeInString.charAt(1) + timeInString.charAt(2) + "");
     timeInString = StringUtils.replaceHTML(timeInString);
     if (timeInString.contains("min")) {
-      Log.i("TEST", "DUPA2" +timeInString.charAt(0) + timeInString.charAt(1) + timeInString.charAt(2) + "");
       for (int i = 0; i < timeInString.length(); i++) {
         char a = timeInString.charAt(i);
         if (a == '<') {

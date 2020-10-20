@@ -1,6 +1,6 @@
 package com.softarea.tarbus.data.model;
 
-import com.google.android.gms.maps.model.LatLng;
+import org.osmdroid.util.GeoPoint;
 
 public class RoutePoint {
   double latitude;
@@ -11,7 +11,7 @@ public class RoutePoint {
     this.longtitude = longtitude;
   }
 
-  public LatLng getCoords() {
-    return new LatLng(this.longtitude, this.latitude);
+  public GeoPoint getCoords() {
+    return new GeoPoint(this.longtitude, this.latitude);
   }
 }

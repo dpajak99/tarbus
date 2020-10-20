@@ -26,15 +26,20 @@ public class BusStopMapObject implements BusStop {
     return isCity;
   }
 
+  @Override
+  public void setIsCity(int status) {
+    this.isCity = status;
+  }
+
   public LatLng getPosition() {
     return new LatLng(latitude, longitude);
   }
 
-  public double getLatitude() {
+  public double getLat() {
     return latitude;
   }
 
-  public double getLongitude() {
+  public double getLng() {
     return longitude;
   }
 

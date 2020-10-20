@@ -2,7 +2,7 @@ package com.softarea.tarbus.utils;
 
 import com.google.gson.JsonArray;
 import com.softarea.tarbus.data.model.BusStopMapObject;
-import com.softarea.tarbus.data.model.RouteHolder;
+import com.softarea.tarbus.data.model.HolderRoute;
 import com.softarea.tarbus.data.model.RoutePoint;
 import com.softarea.tarbus.data.model.RouteWariant;
 import com.softarea.tarbus.data.model.Vehicle;
@@ -64,8 +64,8 @@ public class RepositoryUtils {
     return routeWariants;
   }
 
-  public static List<RouteHolder> parsePolylines(JsonArray array) {
-    List<RouteHolder> routeHolders = new ArrayList<>();
+  public static List<HolderRoute> parsePolylines(JsonArray array) {
+    List<HolderRoute> holderRoutes = new ArrayList<>();
     double tmp = 0;
 
     for (int i = 0; i < array.size(); i++) {
@@ -80,10 +80,10 @@ public class RepositoryUtils {
           routePoints.add(new RoutePoint(tmp, routeJsonPoints.get(j).getAsDouble()));
         }
       }
-      routeHolders.add(new RouteHolder(routeElement.get(0).getAsInt(), routeElement.get(1).getAsInt(), routeElement.get(2).getAsInt(), routePoints));
+      holderRoutes.add(new HolderRoute(routeElement.get(0).getAsInt(), routeElement.get(1).getAsInt(), routeElement.get(2).getAsInt(), routePoints));
     }
 
-    return routeHolders;
+    return holderRoutes;
   }
   public static Vehicle parseJsonToVehicle(String jsonVehicles) {
     JSONArray jsonArray = null;

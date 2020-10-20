@@ -7,6 +7,8 @@ import com.softarea.tarbus.data.model.DatabaseRoute;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 @Dao
 public interface DbBusDAO {
   @Query("SELECT DISTINCT numer_linii FROM Autobus, Odjazd WHERE Odjazd.id_przystanku = :busStopId AND Autobus.id_autobusu = Odjazd.id_autobusu")
@@ -16,7 +18,7 @@ public interface DbBusDAO {
   int getBusLineFromId(int lineId);
 
   @Query("SELECT id_autobusu FROM Autobus WHERE numer_linii = :line")
-  int getBusLineId(String line);
+  Observable<Integer> getBusLineId(int line);
 
   @Query("SELECT * FROM Autobus")
   List<DatabaseRoute> getAll();

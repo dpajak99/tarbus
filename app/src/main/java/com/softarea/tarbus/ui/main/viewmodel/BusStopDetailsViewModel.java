@@ -95,16 +95,20 @@ public class BusStopDetailsViewModel extends Observable {
     for (int i = 0; i < departues.size(); i++) {
       Departue departue = departues.get(i);
       if (departue.getDepartueTime() > 0 && departue.getDepartueTime() < 60) {
+        Log.i("TEST", "After 00:00 - before: " + departue.getBusLine() + " | " + TimeUtils.min2HHMM(departue.getDepartueTime()));
         departue.setDepartueTime(departue.getDepartueTime() + 1440);
+        Log.i("TEST", "After 00:00 - after: " + departue.getBusLine() + " | " + TimeUtils.min2HHMM(departue.getDepartueTime()));
       } else if (departue.getDepartueTime() < currentTime) {
         itemsToRemove.add(i);
         continue;
       }
       if (!ListUtils.isIntInList(usedLines, departue.getBusLine())) {
+        Log.i("TEST", "UsedLine: " + departue.getBusLine() + " | " + TimeUtils.min2HHMM(departue.getDepartueTime()));
         usedLines.add(departue.getBusLine());
         itemsToRemove.add(i);
       }
     }
+
 
     return DeparturesHelper.removeDepartuesFromList(itemsToRemove, departues);
   }

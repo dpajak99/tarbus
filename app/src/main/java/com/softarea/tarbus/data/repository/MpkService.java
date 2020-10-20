@@ -17,10 +17,13 @@ public interface MpkService {
   Observable<LiveDepartues> getSchedule(@Query("busStopId") int id);
 
   @GET("Home/CNR_GetVehicles")
-  Call<LiveJsonVehicles> getVehicles(@Query("r") String busLine, @Query("d") String destination, @Query("nb") String busId );
+  Observable<LiveJsonVehicles> getVehicles(@Query("r") int busLine, @Query("nb") String busId );
+
+  @GET("Home/CNR_GetVehicles")
+  Observable<LiveJsonVehicles> getAllVehicles();
 
   @GET("Home/GetTracks")
-  Call<JsonArray> getTracks( @Query("routeId") String routeId, @Query("ttId") String ttId, @Query("transits") String transits );
+  Observable<JsonArray> getTracks( @Query("routeId") int routeId, @Query("ttId") int ttId, @Query("transits") int transits );
 
   @GET("Home/SearchConnection")
   Call<SearchConnectionCallback> searchConnection(@Query("lng1") String lng1, @Query("lat1") String lat1, @Query("lng2") String lng2, @Query("lat2") String lat2,

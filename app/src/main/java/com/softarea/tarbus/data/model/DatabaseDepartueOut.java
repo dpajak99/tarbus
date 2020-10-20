@@ -54,7 +54,7 @@ public class DatabaseDepartueOut implements Departue {
   }
 
   @Override
-  public void setDepartueTime(int time) {
+  public void setDepartueTime(int departueTime) {
     this.departueTime = departueTime;
   }
 

@@ -4,12 +4,12 @@ import java.util.List;
 
 public class BusTrack {
   List<BusStopMapObject> busStops;
-  List<RouteHolder> routeHolders;
+  List<HolderRoute> holderRoutes;
   List<RouteWariant> routeWariants;
 
-  public BusTrack(List<BusStopMapObject> busStops, List<RouteHolder> routeHolders, List<RouteWariant> routeWariants) {
+  public BusTrack(List<BusStopMapObject> busStops, List<HolderRoute> holderRoutes, List<RouteWariant> routeWariants) {
     this.busStops = busStops;
-    this.routeHolders = routeHolders;
+    this.holderRoutes = holderRoutes;
     this.routeWariants = routeWariants;
   }
 
@@ -17,8 +17,8 @@ public class BusTrack {
     return busStops;
   }
 
-  public List<RouteHolder> getRouteHolders() {
-    return routeHolders;
+  public List<HolderRoute> getHolderRoutes() {
+    return holderRoutes;
   }
 
   public List<RouteWariant> getRouteWariants() {

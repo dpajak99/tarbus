@@ -1,6 +1,8 @@
 package com.softarea.tarbus.data.model;
 
-public class Vehicle {
+import com.softarea.tarbus.data.interfaces.MapItem;
+
+public class Vehicle implements MapItem {
   private int nrRadia;
   private int nb;
   private String numerLini;
@@ -215,5 +217,15 @@ public class Vehicle {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public double getLat() {
+    return getSzerokosc();
+  }
+
+  @Override
+  public double getLng() {
+    return getDlugosc();
   }
 }
